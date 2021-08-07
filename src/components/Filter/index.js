@@ -4,7 +4,7 @@ import includes from 'lodash/includes';
 import toLower from 'lodash/toLower';
 import replace from 'lodash/replace';;
 
-export default ({ members, setFilteredMembers, setCurrentPage }) => {
+export default ({ members, setFilteredMembers }) => {
   const removeStringSpaces = (text) => (
     replace(text, /\s/, '')
   )
@@ -25,8 +25,6 @@ export default ({ members, setFilteredMembers, setCurrentPage }) => {
     } else {
       setFilteredMembers(members);
     }
-
-    setCurrentPage(0);
   };
 
   const handleFilterFormReset = () => {

@@ -48,9 +48,13 @@ export default () => {
       });
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [membersPerPage, filteredMembers])
+
   return (
     <div className="list-container">
-      <Filter members={members} setFilteredMembers={setFilteredMembers} setCurrentPage={setCurrentPage} />
+      <Filter members={members} setFilteredMembers={setFilteredMembers} />
 
       {loading && (
         <div className="loading-container">
