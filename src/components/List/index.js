@@ -50,8 +50,8 @@ const List = () => {
       </thead>
       <tbody>
         {
-          members.map((member) => (
-            <ListItem member={member} key={member.id} />
+          members.map((member, index) => (
+            <ListItem member={member} key={index} />
           ))
         }
       </tbody>
