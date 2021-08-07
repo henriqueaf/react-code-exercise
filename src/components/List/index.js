@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Form, FormGroup, Row, Col, Spinner, Table, Button } from 'react-bootstrap';
+import { Form, FormGroup, Row, Col, Spinner, Button } from 'react-bootstrap';
 import includes from 'lodash/includes';
 import toLower from 'lodash/toLower';
 import replace from 'lodash/replace';
 import './index.css';
 
+import Filter from '../Filter';
+import Table from '../Table';
 import ListItem from '../ListItem';
 import Pagination from '../Pagination';
 import CongressImg from '../../images/congress.png';
 
-const List = () => {
+export default () => {
   const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
 
-  const [membersPerPage, setMembersPerPage] = useState(10);
+  const [membersPerPage, setMembersPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
 
   const startIndex = currentPage * membersPerPage;
@@ -46,74 +48,9 @@ const List = () => {
       });
   }, []);
 
-  const removeStringSpaces = (text) => (
-    replace(text, /\s/, '')
-  )
-
-  const filterMemberByFullname = (member, inputText) => {
-    const memberFullName = removeStringSpaces(toLower(`${member.first_name}${member.last_name}${member.last_name}`));
-    const searchText = removeStringSpaces(toLower(inputText));
-
-    return includes(memberFullName, searchText);
-  }
-
-  const handleFilterTextChange = (event) => {
-    const inputText = event.target.value;
-
-    if (Boolean(inputText)) {
-      const newArray = members.filter((member) => filterMemberByFullname(member, inputText));
-      setFilteredMembers(newArray);
-    } else {
-      setFilteredMembers(members);
-    }
-
-    setCurrentPage(0);
-  };
-
-  const handleFilterFormReset = () => {
-    setFilteredMembers(members);
-  }
-
-  const renderTable = () => (
-    <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Twitter</th>
-          <th>Facebook</th>
-          <th>Youtube</th>
-          <th>Party</th>
-          <th>District/State</th>
-          <th>Next Election</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          filteredMembers.slice(startIndex, endIndex).map((member, index) => (
-            <ListItem member={member} key={index} />
-          ))
-        }
-      </tbody>
-    </Table>
-  )
-
   return (
     <div className="list-container">
-      <div className="my-3">
-        <Form onReset={handleFilterFormReset}>
-          <Row>
-            <Col>
-              <Form.Control placeholder="Senator/Representative name" onChange={handleFilterTextChange} />
-            </Col>
-            <Col className="text-start">
-              <Button variant="primary" type="reset">
-                Clear
-              </Button>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+      <Filter members={members} setFilteredMembers={setFilteredMembers} setCurrentPage={setCurrentPage} />
 
       {loading && (
         <div className="loading-container">
@@ -127,11 +64,16 @@ const List = () => {
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           membersPerPage={membersPerPage}
+          setMembersPerPage={setMembersPerPage}
         />
       }
-      {!loading && renderTable()}
+      {!loading &&
+        <Table
+          filteredMembers={filteredMembers}
+          startIndex={startIndex}
+          endIndex={endIndex}
+        />
+      }
     </div>
   );
 };
-
-export default List;

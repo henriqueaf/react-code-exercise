@@ -1,28 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { Pagination } from 'react-bootstrap';
+import React from 'react';
+import { Pagination, Form, Container, Row, Col } from 'react-bootstrap';
+import isNumber from 'lodash/isNumber';
 
-const CustomPagination = ({ numberOfMembers, currentPage, setCurrentPage, membersPerPage }) => {
+export default ({ numberOfMembers, currentPage, setCurrentPage, membersPerPage, setMembersPerPage }) => {
   const pages = Math.ceil(numberOfMembers / membersPerPage);
+  const pagesArray = [];
 
-  const renderPagination = (pages, currentPage) => {
-    let pagesArray = [];
-
-    for (let number = 0; number < pages; number++) {
-      pagesArray.push(
-        <Pagination.Item key={number} active={number === currentPage} onClick={() => setCurrentPage(number)}>
-          {number + 1}
-        </Pagination.Item>
-      );
-    }
-
-    return (
-      <Pagination>
-        {pagesArray}
-      </Pagination>
-    )
+  for (let number = 0; number < pages; number++) {
+    pagesArray.push(
+      <Pagination.Item key={number} active={number === currentPage} onClick={() => setCurrentPage(number)}>
+        {number + 1}
+      </Pagination.Item>
+    );
   }
 
-  return renderPagination(pages, currentPage);
-};
+  return (
+    <Container fluid className="px-0">
+      <Row>
+        <Col>
+          <Pagination>
+            {pagesArray}
+          </Pagination>
+        </Col>
 
-export default CustomPagination;
+        <Col sm={1}>
+          <Form.Select value={membersPerPage} onChange={({ target: { value } }) => setMembersPerPage(value)}>
+            <option>Select members per page</option>
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+          </Form.Select>
+        </Col>
+      </Row>
+    </Container>
+  )
+};
