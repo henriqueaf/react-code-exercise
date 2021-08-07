@@ -1,13 +1,24 @@
-import React, { useContext, useEffect, useState, MouseEvent } from 'react';
-import { FormGroup, Spinner, Table } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Form, FormGroup, Row, Col, Spinner, Table, Button } from 'react-bootstrap';
+import includes from 'lodash/includes';
+import toLower from 'lodash/toLower';
+import replace from 'lodash/replace';
 import './index.css';
 
 import ListItem from '../ListItem';
+import Pagination from '../Pagination';
 import CongressImg from '../../images/congress.png';
 
 const List = () => {
   const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState([]);
+  const [filteredMembers, setFilteredMembers] = useState([]);
+
+  const [membersPerPage, setMembersPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const startIndex = currentPage * membersPerPage;
+  const endIndex = startIndex + membersPerPage;
 
   useEffect(() => {
     const session = 115; // 115th congressional session
@@ -25,6 +36,7 @@ const List = () => {
       .then((responseMembers) => {
         console.log(responseMembers);
         setMembers(responseMembers);
+        setFilteredMembers(responseMembers);
       })
       .catch(() => {
         setLoading(false);
@@ -33,6 +45,34 @@ const List = () => {
         setLoading(false);
       });
   }, []);
+
+  const removeStringSpaces = (text) => (
+    replace(text, /\s/, '')
+  )
+
+  const filterMemberByFullname = (member, inputText) => {
+    const memberFullName = removeStringSpaces(toLower(`${member.first_name}${member.last_name}${member.last_name}`));
+    const searchText = removeStringSpaces(toLower(inputText));
+
+    return includes(memberFullName, searchText);
+  }
+
+  const handleFilterTextChange = (event) => {
+    const inputText = event.target.value;
+
+    if (Boolean(inputText)) {
+      const newArray = members.filter((member) => filterMemberByFullname(member, inputText));
+      setFilteredMembers(newArray);
+    } else {
+      setFilteredMembers(members);
+    }
+
+    setCurrentPage(0);
+  };
+
+  const handleFilterFormReset = () => {
+    setFilteredMembers(members);
+  }
 
   const renderTable = () => (
     <Table striped bordered hover>
@@ -50,7 +90,7 @@ const List = () => {
       </thead>
       <tbody>
         {
-          members.map((member, index) => (
+          filteredMembers.slice(startIndex, endIndex).map((member, index) => (
             <ListItem member={member} key={index} />
           ))
         }
@@ -60,12 +100,35 @@ const List = () => {
 
   return (
     <div className="list-container">
+      <div className="my-3">
+        <Form onReset={handleFilterFormReset}>
+          <Row>
+            <Col>
+              <Form.Control placeholder="Senator/Representative name" onChange={handleFilterTextChange} />
+            </Col>
+            <Col className="text-start">
+              <Button variant="primary" type="reset">
+                Clear
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      </div>
+
       {loading && (
         <div className="loading-container">
           <img src={CongressImg} alt="Loading" className="loading" />
         </div>
       )}
 
+      {!loading &&
+        <Pagination
+          numberOfMembers={filteredMembers.length}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          membersPerPage={membersPerPage}
+        />
+      }
       {!loading && renderTable()}
     </div>
   );
