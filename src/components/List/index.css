@@ -1,0 +1,25 @@
+.loading-container {
+  text-align: center;
+}
+
+.loading {
+  -webkit-animation: fadeBlink 2s infinite;
+  -moz-animation: fadeBlink 2s infinite;
+  animation: fadeBlink 2s infinite;
+}
+
+@-moz-keyframes fadeBlink {
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+}
+@-webkit-keyframes fadeBlink {
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+}
+@keyframes fadeBlink {
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+}
