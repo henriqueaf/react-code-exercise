@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pagination, Form, Container, Row, Col } from 'react-bootstrap';
+import { Pagination, Form, Row, Col } from 'react-bootstrap';
 import isNumber from 'lodash/isNumber';
 
 export default ({ numberOfMembers, currentPage, setCurrentPage, membersPerPage, setMembersPerPage }) => {
@@ -15,23 +15,21 @@ export default ({ numberOfMembers, currentPage, setCurrentPage, membersPerPage, 
   }
 
   return (
-    <Container fluid className="px-0">
-      <Row>
-        <Col>
-          <Pagination>
-            {pagesArray}
-          </Pagination>
-        </Col>
+    <Row>
+      <Col>
+        <Pagination>
+          {pagesArray}
+        </Pagination>
+      </Col>
 
-        <Col sm={1}>
-          <Form.Select value={membersPerPage} onChange={({ target: { value } }) => setMembersPerPage(value)}>
-            <option>Select members per page</option>
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-          </Form.Select>
-        </Col>
-      </Row>
-    </Container>
+      <Col sm={1}>
+        <Form.Select value={membersPerPage} onChange={({ target: { value } }) => setMembersPerPage(value)}>
+          <option>Select members per page</option>
+          <option value={5}>5</option>
+          <option value={10}>10</option>
+          <option value={20}>20</option>
+        </Form.Select>
+      </Col>
+    </Row>
   )
 };
