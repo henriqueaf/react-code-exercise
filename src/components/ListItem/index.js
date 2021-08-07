@@ -13,13 +13,18 @@ const ListItem = ({ member }) => {
     facebook_account,
     youtube_account,
     party,
+    district,
     state,
     next_election
   } = member;
 
-  const fullName = () => {
-    return `${suffix && ' ' || ''}${first_name}${middle_name && ' ' || ' '}${last_name}`;
-  }
+  const fullName = () => (
+    `${suffix && ' ' || ''}${first_name}${middle_name && ' ' || ' '}${last_name}`
+  );
+
+  const districtAndState = () => (
+    `${district && '/' || ''}${state}`
+  );
 
   return (
     <tr>
@@ -29,7 +34,7 @@ const ListItem = ({ member }) => {
       <td><MediaLink type="facebook" account_name={facebook_account} /></td>
       <td><MediaLink type="youtube" account_name={youtube_account} /></td>
       <td>{party}</td>
-      <td>{state}</td>
+      <td>{districtAndState()}</td>
       <td>{next_election}</td>
     </tr>
   );
