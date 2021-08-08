@@ -9,6 +9,7 @@ import Filter from '../Filter';
 import Table from '../Table';
 import ListItem from '../ListItem';
 import Pagination from '../Pagination';
+import DetailsModal from '../DetailsModal';
 import CongressImg from '../../images/congress.png';
 
 const HOUSE_MINIMUM_SESSION = 102;
@@ -18,6 +19,7 @@ export default () => {
   const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
+  const [selectedMemberForDetails, setSelectedMemberForDetails] = useState(null);
 
   const [membersPerPage, setMembersPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
@@ -74,6 +76,12 @@ export default () => {
 
   return (
     <div className="list-container">
+      <DetailsModal
+        show={Boolean(selectedMemberForDetails)}
+        handleClose={() => setSelectedMemberForDetails(null)}
+        member={selectedMemberForDetails}
+      />
+
       <Filter
         members={members}
         setFilteredMembers={setFilteredMembers}
@@ -104,6 +112,7 @@ export default () => {
           filteredMembers={filteredMembers}
           startIndex={startIndex}
           endIndex={endIndex}
+          setSelectedMemberForDetails={setSelectedMemberForDetails}
         />
       }
     </div>

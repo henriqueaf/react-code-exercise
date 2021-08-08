@@ -3,7 +3,7 @@ import { Table } from 'react-bootstrap';
 
 import ListItem from '../ListItem';
 
-export default ({ filteredMembers, startIndex, endIndex }) => {
+export default ({ filteredMembers, startIndex, endIndex, setSelectedMemberForDetails }) => {
   return (
     <Table striped bordered hover>
       <thead>
@@ -16,12 +16,13 @@ export default ({ filteredMembers, startIndex, endIndex }) => {
           <th>Party</th>
           <th>District/State</th>
           <th>Next Election</th>
+          <th>Details</th>
         </tr>
       </thead>
       <tbody>
         {
           filteredMembers.slice(startIndex, endIndex).map((member, index) => (
-            <ListItem member={member} key={index} />
+            <ListItem member={member} key={index} setSelectedMemberForDetails={setSelectedMemberForDetails} />
           ))
         }
       </tbody>

@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
 import MediaLink from '../MediaLink';
-import './index.css';
 
-const ListItem = ({ member }) => {
+const ListItem = ({ member, setSelectedMemberForDetails }) => {
   const {
     id,
     suffix,
@@ -26,6 +25,11 @@ const ListItem = ({ member }) => {
     `${district && '/' || ''}${state}`
   );
 
+  const handleDetailsClick = (member) => (event) => {
+    event.preventDefault();
+    setSelectedMemberForDetails(member);
+  }
+
   return (
     <tr>
       <td>{id}</td>
@@ -36,6 +40,7 @@ const ListItem = ({ member }) => {
       <td>{party}</td>
       <td>{districtAndState()}</td>
       <td>{next_election}</td>
+      <td><a href="#none" onClick={handleDetailsClick(member)}>Details</a></td>
     </tr>
   );
 };
