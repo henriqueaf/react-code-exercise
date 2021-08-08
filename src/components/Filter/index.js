@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import includes from 'lodash/includes';
 import toLower from 'lodash/toLower';
 import replace from 'lodash/replace';
+import isString from 'lodash/isString';
 
 export default ({ members, setFilteredMembers, session, setSession, chamber, setChamber, minimumSession }) => {
+  const [party, setParty] = useState('');
+  const nameInputRef = useRef();
+  const partyInputRef = useRef();
+
   const removeStringSpaces = (text) => (
     replace(text, /\s/, '')
   )
@@ -16,16 +21,33 @@ export default ({ members, setFilteredMembers, session, setSession, chamber, set
     return includes(memberFullName, searchText);
   }
 
-  const handleFilterTextChange = (event) => {
-    const inputText = event.target.value;
+  const handleFilterNameChange = (membersToSearch) => {
+    const inputText = nameInputRef.current.value;
 
     if (Boolean(inputText)) {
-      const newArray = members.filter((member) => filterMemberByFullname(member, inputText));
-      setFilteredMembers(newArray);
-    } else {
-      setFilteredMembers(members);
+      return membersToSearch.filter((member) => filterMemberByFullname(member, inputText));
     }
+
+    return membersToSearch;
   };
+
+  const handleFilterPartyChange = (membersToSearch) => {
+    const inputText = partyInputRef.current.value;
+    setParty(inputText);
+
+    if (inputText != '0') {
+      return membersToSearch.filter((member) => member.party == inputText);
+    }
+
+    return membersToSearch;
+  };
+
+  const applyFilters = () => {
+    let newMembers = handleFilterNameChange(members);
+    newMembers = handleFilterPartyChange(newMembers);
+
+    setFilteredMembers(newMembers);
+  }
 
   const handleFilterFormReset = () => {
     setFilteredMembers(members);
@@ -52,7 +74,15 @@ export default ({ members, setFilteredMembers, session, setSession, chamber, set
       <Form onReset={handleFilterFormReset}>
         <Row>
           <Col>
-            <Form.Control placeholder="Senator/Representative name" onChange={handleFilterTextChange} />
+            <Form.Control placeholder="Senator/Representative name" ref={nameInputRef} onChange={applyFilters} />
+          </Col>
+
+          <Col>
+            <Form.Select ref={partyInputRef} value={party} onChange={applyFilters}>
+              <option value={0}>Select party</option>
+              <option value="R">R</option>
+              <option value="D">D</option>
+            </Form.Select>
           </Col>
 
           <Col className="text-start">
