@@ -7,8 +7,11 @@ import isString from 'lodash/isString';
 
 export default ({ members, setFilteredMembers, session, setSession, chamber, setChamber, minimumSession }) => {
   const [party, setParty] = useState('');
+  const [gender, setGender] = useState('');
+
   const nameInputRef = useRef();
   const partyInputRef = useRef();
+  const genderInputRef = useRef();
 
   const removeStringSpaces = (text) => (
     replace(text, /\s/, '')
@@ -27,7 +30,6 @@ export default ({ members, setFilteredMembers, session, setSession, chamber, set
     if (Boolean(inputText)) {
       return membersToSearch.filter((member) => filterMemberByFullname(member, inputText));
     }
-
     return membersToSearch;
   };
 
@@ -38,13 +40,23 @@ export default ({ members, setFilteredMembers, session, setSession, chamber, set
     if (inputText != '0') {
       return membersToSearch.filter((member) => member.party == inputText);
     }
+    return membersToSearch;
+  };
 
+  const handleFilterGenderChange = (membersToSearch) => {
+    const inputText = genderInputRef.current.value;
+    setGender(inputText);
+
+    if (inputText != '0') {
+      return membersToSearch.filter((member) => member.gender == inputText);
+    }
     return membersToSearch;
   };
 
   const applyFilters = () => {
     let newMembers = handleFilterNameChange(members);
     newMembers = handleFilterPartyChange(newMembers);
+    newMembers = handleFilterGenderChange(newMembers);
 
     setFilteredMembers(newMembers);
   }
@@ -82,6 +94,14 @@ export default ({ members, setFilteredMembers, session, setSession, chamber, set
               <option value={0}>Select party</option>
               <option value="R">R</option>
               <option value="D">D</option>
+            </Form.Select>
+          </Col>
+
+          <Col>
+            <Form.Select ref={genderInputRef} value={gender} onChange={applyFilters}>
+              <option value={0}>Select gender</option>
+              <option value="M">M</option>
+              <option value="F">F</option>
             </Form.Select>
           </Col>
 
