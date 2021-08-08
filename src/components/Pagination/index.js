@@ -18,7 +18,11 @@ export default ({ numberOfMembers, currentPage, setCurrentPage, membersPerPage, 
     <Row>
       <Col>
         <Pagination>
+          <Pagination.First onClick={() => setCurrentPage(0)} />
+          <Pagination.Prev onClick={() => currentPage > 0 && setCurrentPage(currentPage - 1)} />
           {pagesArray}
+          <Pagination.Next onClick={() => currentPage < (pages - 1) && setCurrentPage(currentPage + 1)} />
+          <Pagination.Last onClick={() => setCurrentPage(pages - 1)} />
         </Pagination>
       </Col>
 

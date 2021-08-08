@@ -105,7 +105,7 @@ export default ({ members, setFilteredMembers, session, setSession, chamber, set
             </Form.Select>
           </Col>
 
-          <Col className="text-start">
+          <Col sm={1}>
             <Button variant="primary" type="reset">
               Clear
             </Button>
@@ -121,7 +121,7 @@ export default ({ members, setFilteredMembers, session, setSession, chamber, set
           </Form.Select>
         </Col>
 
-        <Col sm={1}>
+        <Col sm={2}>
           {renderSessionsSelect()}
         </Col>
       </Row>
