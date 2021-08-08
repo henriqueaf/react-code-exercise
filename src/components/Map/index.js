@@ -5,7 +5,7 @@ const Map = withScriptjs(withGoogleMap(({lat, lng}) => {
   return (
     <GoogleMap
       defaultZoom={15}
-      defaultCenter={{ lat: lat, lng: lng }}
+      center={{ lat: lat, lng: lng }}
       options={{disableDefaultUI: true}}
     >
       <Marker position={{ lat: lat, lng: lng }} />

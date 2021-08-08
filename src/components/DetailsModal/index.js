@@ -1,40 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
-import { getAddressGeocodeLocation } from '../../services/googleGeocode';
+import { getAddressGeocodeLocation } from '../../services/googleGeocodeApi';
+import { getMemberDetails } from '../../services/membersApi';
 
 import Map from '../Map';
 
 const DetailsModal = ({ show, handleClose, member }) => {
-  const [officeGeolocation, setOfficeGeolocation] = useState();
+  const [officeGeocode, setOfficeGeocode] = useState();
+  const [memberDetails, setMemberDetails] = useState();
 
   useEffect(() => {
-    if (Boolean(member?.office)) {
+    if (Boolean(member)) {
       async function getGeocode() {
         const geocode = await getAddressGeocodeLocation(member.office);
-        setOfficeGeolocation(geocode);
+        setOfficeGeocode(geocode);
       }
 
-      getGeocode()
+      async function getDetails() {
+        const details = await getMemberDetails(member.api_uri);
+        setMemberDetails(details);
+      }
+
+      getGeocode();
+      getDetails();
     }
   }, [member]);
+
+  const renderMembersDetails = () => (
+    <>
+      <ul class="list-unstyled">
+        <li><h5><b>Roles:</b></h5>
+        <hr/>
+        <ul>
+          {memberDetails.roles.map((role, index) => (
+            <li key={index}>{role.title} => from <b>{role.start_date}</b> to <b>{role.end_date}</b></li>
+          ))}
+        </ul>
+        </li>
+      </ul>
+    </>
+  )
+
+  const renderMap = () => (
+    <>
+      <h5><b>Office:</b> {member?.office}</h5>
+      <hr/>
+      <Map
+        googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
+        loadingElement={<div style={{ height: '100%' }} />}
+        containerElement={<div style={{ height: '400px' }} />}
+        mapElement={<div style={{ height: '100%' }} />}
+        lat={officeGeocode.lat}
+        lng={officeGeocode.lng}
+      />
+    </>
+  )
 
   return (
     <Modal size="lg" show={show} onHide={handleClose} animation={false}>
       <Modal.Header closeButton>
-        <Modal.Title>{member?.first_name}</Modal.Title>
+        <Modal.Title>{member?.first_name} {member?.last_name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {
-          officeGeolocation &&
-          <Map
-            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyDOXsQI-gNk4QO29ZqxofPryaJU_cLmDWs"
-            loadingElement={<div style={{ height: '100%' }} />}
-            containerElement={<div style={{ height: '400px' }} />}
-            mapElement={<div style={{ height: '100%' }} />}
-            lat={officeGeolocation.lat}
-            lng={officeGeolocation.lng}
-          />
-        }
+        {memberDetails && renderMembersDetails()}
+        {officeGeocode && renderMap()}
       </Modal.Body>
     </Modal>
   );
