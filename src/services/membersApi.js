@@ -17,7 +17,7 @@ export const getMemberDetails = async (uri) => {
   if(Boolean(uri)) {
     const response = await fetch(uri, {
       headers: new Headers({
-        'X-API-Key': 'd0ywBucVrXRlMQhENZxRtL3O7NPgtou2mwnLARTr',
+        'X-API-Key': API_KEY,
       }),
     });
 

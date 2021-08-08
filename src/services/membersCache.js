@@ -1,3 +1,5 @@
+import { getMembersList } from './membersApi';
+
 const ONE_DAY = 1000 * 60 * 60 * 24;
 
 const currentTime = () => {
@@ -21,15 +23,7 @@ export const getMembersCache = async (url) => {
 }
 
 const fetchAndSetMembersToCache = async (url) => {
-  const response = await fetch(url, {
-    headers: new Headers({
-      'X-API-Key': 'd0ywBucVrXRlMQhENZxRtL3O7NPgtou2mwnLARTr',
-    }),
-  });
-
-  const responseJson = await response.json();
-  const members = responseJson.results[0].members;
-  console.log('entrou no fetch:', members);
+  const members = await getMembersList(url);
 
   const data = {
     members,

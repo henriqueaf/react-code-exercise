@@ -28,7 +28,7 @@ const DetailsModal = ({ show, handleClose, member }) => {
 
   const renderMembersDetails = () => (
     <>
-      <ul class="list-unstyled">
+      <ul className="list-unstyled">
         <li><h5><b>Roles:</b></h5>
         <hr/>
         <ul>
@@ -40,6 +40,12 @@ const DetailsModal = ({ show, handleClose, member }) => {
       </ul>
     </>
   )
+
+  const onModalHide = () => {
+    setOfficeGeocode(null);
+    setMemberDetails(null);
+    handleClose();
+  }
 
   const renderMap = () => (
     <>
@@ -57,7 +63,7 @@ const DetailsModal = ({ show, handleClose, member }) => {
   )
 
   return (
-    <Modal size="lg" show={show} onHide={handleClose} animation={false}>
+    <Modal size="lg" show={show} onHide={onModalHide} animation={false}>
       <Modal.Header closeButton>
         <Modal.Title>{member?.first_name} {member?.last_name}</Modal.Title>
       </Modal.Header>
