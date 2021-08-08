@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, FormGroup, Row, Col, Spinner, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import includes from 'lodash/includes';
 import toLower from 'lodash/toLower';
 import replace from 'lodash/replace';
@@ -11,6 +11,9 @@ import ListItem from '../ListItem';
 import Pagination from '../Pagination';
 import CongressImg from '../../images/congress.png';
 
+const HOUSE_MINIMUM_SESSION = 102;
+const SENATE_MINIMUM_SESSION = 80;
+
 export default () => {
   const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState([]);
@@ -18,14 +21,25 @@ export default () => {
 
   const [membersPerPage, setMembersPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
+  const [chamber, setChamber] = useState('senate');
+  const [session, setSession] = useState(115);
+  const [minimumSession, setMinimumSession] = useState(SENATE_MINIMUM_SESSION);
 
   const startIndex = currentPage * membersPerPage;
   const endIndex = startIndex + membersPerPage;
 
-  useEffect(() => {
-    const session = 115; // 115th congressional session
-    const chamber = 'senate'; // or 'house'
+  const calculateMinimumSession = () => {
+    switch (chamber) {
+      case 'senate':
+        return SENATE_MINIMUM_SESSION;
+        break;
+      case 'house':
+        return HOUSE_MINIMUM_SESSION;
+        break;
+    }
+  };
 
+  useEffect(() => {
     setLoading(true);
 
     fetch(`https://api.propublica.org/congress/v1/${session}/${chamber}/members.json`, {
@@ -45,16 +59,30 @@ export default () => {
       })
       .finally(() => {
         setLoading(false);
+        setMinimumSession(calculateMinimumSession());
       });
-  }, []);
+  }, [chamber, session]);
 
   useEffect(() => {
     setCurrentPage(0);
-  }, [membersPerPage, filteredMembers])
+  }, [membersPerPage, filteredMembers]);
+
+  useEffect(() => {
+    if (chamber === 'house' && session < HOUSE_MINIMUM_SESSION)
+      setSession(HOUSE_MINIMUM_SESSION);
+  }, [chamber]);
 
   return (
     <div className="list-container">
-      <Filter members={members} setFilteredMembers={setFilteredMembers} />
+      <Filter
+        members={members}
+        setFilteredMembers={setFilteredMembers}
+        chamber={chamber}
+        setChamber={setChamber}
+        session={session}
+        setSession={setSession}
+        minimumSession={minimumSession}
+      />
 
       {loading && (
         <div className="loading-container">

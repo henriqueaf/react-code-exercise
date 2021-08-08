@@ -2,9 +2,9 @@ import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import includes from 'lodash/includes';
 import toLower from 'lodash/toLower';
-import replace from 'lodash/replace';;
+import replace from 'lodash/replace';
 
-export default ({ members, setFilteredMembers }) => {
+export default ({ members, setFilteredMembers, session, setSession, chamber, setChamber, minimumSession }) => {
   const removeStringSpaces = (text) => (
     replace(text, /\s/, '')
   )
@@ -31,6 +31,22 @@ export default ({ members, setFilteredMembers }) => {
     setFilteredMembers(members);
   }
 
+  const renderSessionsSelect = () => {
+    const optionsArray = [];
+
+    for (let number = minimumSession; number <= 117; number++) {
+      optionsArray.push(
+        <option key={number} value={number}>{number}</option>
+      );
+    }
+
+    return (
+      <Form.Select value={session} onChange={({ target: { value } }) => setSession(value)}>
+        {optionsArray}
+      </Form.Select>
+    )
+  }
+
   return (
     <div className="my-3">
       <Form onReset={handleFilterFormReset}>
@@ -38,6 +54,7 @@ export default ({ members, setFilteredMembers }) => {
           <Col>
             <Form.Control placeholder="Senator/Representative name" onChange={handleFilterTextChange} />
           </Col>
+
           <Col className="text-start">
             <Button variant="primary" type="reset">
               Clear
@@ -45,6 +62,19 @@ export default ({ members, setFilteredMembers }) => {
           </Col>
         </Row>
       </Form>
+
+      <Row className="mt-3">
+        <Col sm={2}>
+          <Form.Select value={chamber} onChange={({ target: { value } }) => setChamber(value)}>
+            <option value="senate">senate</option>
+            <option value="house">house</option>
+          </Form.Select>
+        </Col>
+
+        <Col sm={1}>
+          {renderSessionsSelect()}
+        </Col>
+      </Row>
     </div>
   );
 };
