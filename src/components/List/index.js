@@ -11,6 +11,7 @@ import ListItem from '../ListItem';
 import Pagination from '../Pagination';
 import DetailsModal from '../DetailsModal';
 import CongressImg from '../../images/congress.png';
+import { getMembersCache } from '../../services/membersCache';
 
 const HOUSE_MINIMUM_SESSION = 102;
 const SENATE_MINIMUM_SESSION = 80;
@@ -44,25 +45,23 @@ export default () => {
   useEffect(() => {
     setLoading(true);
 
-    fetch(`https://api.propublica.org/congress/v1/${session}/${chamber}/members.json`, {
-      headers: new Headers({
-        'X-API-Key': 'd0ywBucVrXRlMQhENZxRtL3O7NPgtou2mwnLARTr',
-      }),
-    })
-      .then((res) => res.json())
-      .then((json) => json.results[0].members)
-      .then((responseMembers) => {
-        console.log(responseMembers);
+    const url = `https://api.propublica.org/congress/v1/${session}/${chamber}/members.json`;
+
+    async function membersCache() {
+      try {
+        const responseMembers = await getMembersCache(url);
         setMembers(responseMembers);
         setFilteredMembers(responseMembers);
-      })
-      .catch(() => {
+      } catch (error) {
+        console.error(error.message);
         setLoading(false);
-      })
-      .finally(() => {
+      } finally {
         setLoading(false);
         setMinimumSession(calculateMinimumSession());
-      });
+      }
+    }
+
+    membersCache()
   }, [chamber, session]);
 
   useEffect(() => {
