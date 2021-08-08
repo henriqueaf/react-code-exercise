@@ -29,9 +29,9 @@ export default ({ numberOfMembers, currentPage, setCurrentPage, membersPerPage, 
       <Col sm={1}>
         <Form.Select value={membersPerPage} onChange={({ target: { value } }) => setMembersPerPage(value)}>
           <option>Select members per page</option>
-          <option value={5}>5</option>
           <option value={10}>10</option>
           <option value={20}>20</option>
+          <option value={30}>30</option>
         </Form.Select>
       </Col>
     </Row>

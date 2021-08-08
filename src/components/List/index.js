@@ -22,7 +22,7 @@ export default () => {
   const [filteredMembers, setFilteredMembers] = useState([]);
   const [selectedMemberForDetails, setSelectedMemberForDetails] = useState(null);
 
-  const [membersPerPage, setMembersPerPage] = useState(5);
+  const [membersPerPage, setMembersPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
   const [chamber, setChamber] = useState('senate');
   const [session, setSession] = useState(115);
