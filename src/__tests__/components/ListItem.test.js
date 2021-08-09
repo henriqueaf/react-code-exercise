@@ -1,4 +1,4 @@
-import TestRenderer from 'react-test-renderer';
+import {render, fireEvent, screen} from '@testing-library/react'
 import ListItem from '../../components/ListItem';
 
 const member = {
@@ -18,7 +18,7 @@ const member = {
 
 const mockSetSelectedMemberForDetails = jest.fn(() => {});
 
-const defaultProps: Props = {
+const defaultProps = {
   member,
   setSelectedMemberForDetails: mockSetSelectedMemberForDetails
 };
@@ -29,31 +29,33 @@ const mount = (props) => {
     ...props,
   };
 
-  const testRenderer = TestRenderer.create(<ListItem {...mergedProps} />);
-  const testInstance = testRenderer.root
-
-  return {
-    testRenderer,
-    memberTableDatas: testInstance.findAllByType('td')
-  };
+  const tbody = document.createElement('tbody');
+  return render(<ListItem {...mergedProps} />, {container: document.body.appendChild(tbody)});
 };
 
 describe('ListItem', () => {
   it('Matches snapshot', () => {
-    const { testRenderer } = mount();
-    expect(testRenderer).toMatchSnapshot();
+    const {container} = mount();
+    expect(container).toMatchSnapshot();
   });
 
   it('renders a tr with some td inside', () => {
-    const {memberTableDatas} = mount();
+    mount();
+    const memberTableDatas = screen.getAllByRole('cell');
     expect(memberTableDatas.length).toBe(9);
   });
 
-  it('Trigger setSelectedMemberForDetails when details link is pressed', () => {
-    const {testRenderer} = mount();
-    const link = testRenderer.root.find((el) => el.children && el.children[0] == 'Details');
+  it('renders member id', () => {
+    mount();
+    const memberIdTableData = screen.getAllByRole('cell')[0];
+    expect(memberIdTableData.textContent).toBe(member.id);
+  });
 
-    link.props.onClick({preventDefault: () => {}});
+  it('Trigger setSelectedMemberForDetails when details link is pressed', () => {
+    mount();
+    const link = screen.getByText('Details');
+
+    fireEvent.click(link, {preventDefault: () => {}});
     expect(mockSetSelectedMemberForDetails).toBeCalledTimes(1);
   });
 })
