@@ -39,13 +39,13 @@ describe('ListItem', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('renders a tr with some td inside', () => {
+  it('Renders a tr with some td inside', () => {
     mount();
     const memberTableDatas = screen.getAllByRole('cell');
     expect(memberTableDatas.length).toBe(9);
   });
 
-  it('renders member id', () => {
+  it('Renders member id', () => {
     mount();
     const memberIdTableData = screen.getAllByRole('cell')[0];
     expect(memberIdTableData.textContent).toBe(member.id);
