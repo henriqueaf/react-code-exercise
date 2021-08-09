@@ -5,7 +5,19 @@ import toLower from 'lodash/toLower';
 import replace from 'lodash/replace';
 import isString from 'lodash/isString';
 
-export default ({ members, setFilteredMembers, session, setSession, chamber, setChamber, minimumSession }) => {
+import { useMembersContext } from '../../contexts/MembersContext';
+
+export default () => {
+  const {
+    members,
+    setFilteredMembers,
+    chamber,
+    setChamber,
+    session,
+    setSession,
+    minimumSession
+  } = useMembersContext();
+
   const [party, setParty] = useState('');
   const [gender, setGender] = useState('');
 
@@ -61,10 +73,6 @@ export default ({ members, setFilteredMembers, session, setSession, chamber, set
     setFilteredMembers(newMembers);
   }
 
-  const handleFilterFormReset = () => {
-    setFilteredMembers(members);
-  }
-
   const renderSessionsSelect = () => {
     const optionsArray = [];
 
@@ -83,7 +91,7 @@ export default ({ members, setFilteredMembers, session, setSession, chamber, set
 
   return (
     <div className="my-3">
-      <Form onReset={handleFilterFormReset}>
+      <Form onReset={() => setFilteredMembers(members)}>
         <Row>
           <Col>
             <Form.Control placeholder="Senator/Representative name" ref={nameInputRef} onChange={applyFilters} />

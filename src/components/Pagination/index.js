@@ -2,8 +2,18 @@ import React from 'react';
 import { Pagination, Form, Row, Col } from 'react-bootstrap';
 import isNumber from 'lodash/isNumber';
 
-export default ({ numberOfMembers, currentPage, setCurrentPage, membersPerPage, setMembersPerPage }) => {
-  const pages = Math.ceil(numberOfMembers / membersPerPage);
+import { useMembersContext } from '../../contexts/MembersContext';
+
+export default () => {
+  const {
+    filteredMembers,
+    membersPerPage,
+    setMembersPerPage,
+    currentPage,
+    setCurrentPage
+  } = useMembersContext();
+
+  const pages = Math.ceil(filteredMembers.length / membersPerPage);
   const pagesArray = [];
 
   for (let number = 0; number < pages; number++) {

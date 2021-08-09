@@ -1,9 +1,20 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
 
+import { useMembersContext } from '../../contexts/MembersContext';
 import ListItem from '../ListItem';
 
-export default ({ filteredMembers, startIndex, endIndex, setSelectedMemberForDetails }) => {
+export default () => {
+  const {
+    filteredMembers,
+    setSelectedMemberForDetails,
+    currentPage,
+    membersPerPage
+  } = useMembersContext();
+
+  const startIndex = currentPage * membersPerPage;
+  const endIndex = startIndex + membersPerPage;
+
   return (
     <Table striped bordered hover>
       <thead>

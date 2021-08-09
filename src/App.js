@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import logo from './logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import List from './components/List';
+import ListContainer from './components/List/container';
 import './App.css';
 
 // you should feel free to reorganize the code however you see fit
@@ -16,7 +16,7 @@ function App() {
         <h1 className="App-title">React Programming Exercise</h1>
       </header>
       <section className="container">
-        <List />
+        <ListContainer />
       </section>
     </div>
   );

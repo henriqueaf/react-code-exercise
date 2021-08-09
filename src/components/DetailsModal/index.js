@@ -1,30 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
+
+import { useMembersContext } from '../../contexts/MembersContext';
 import { getAddressGeocodeLocation } from '../../services/googleGeocodeApi';
 import { getMemberDetails } from '../../services/membersApi';
-
 import Map from '../Map';
 
-const DetailsModal = ({ show, handleClose, member }) => {
+const DetailsModal = () => {
+  const {
+    selectedMemberForDetails,
+    setSelectedMemberForDetails
+  } = useMembersContext();
+
   const [officeGeocode, setOfficeGeocode] = useState();
   const [memberDetails, setMemberDetails] = useState();
 
   useEffect(() => {
-    if (Boolean(member)) {
+    if (Boolean(selectedMemberForDetails)) {
       async function getGeocode() {
-        const geocode = await getAddressGeocodeLocation(member.office);
+        const geocode = await getAddressGeocodeLocation(selectedMemberForDetails.office);
         setOfficeGeocode(geocode);
       }
 
       async function getDetails() {
-        const details = await getMemberDetails(member.api_uri);
+        const details = await getMemberDetails(selectedMemberForDetails.api_uri);
         setMemberDetails(details);
       }
 
       getGeocode();
       getDetails();
     }
-  }, [member]);
+  }, [selectedMemberForDetails]);
 
   const renderMembersDetails = () => (
     <>
@@ -44,12 +50,12 @@ const DetailsModal = ({ show, handleClose, member }) => {
   const onModalHide = () => {
     setOfficeGeocode(null);
     setMemberDetails(null);
-    handleClose();
+    setSelectedMemberForDetails(null);
   }
 
   const renderMap = () => (
     <>
-      <h5><b>Office:</b> {member?.office}</h5>
+      <h5><b>Office:</b> {selectedMemberForDetails?.office}</h5>
       <hr/>
       <Map
         googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
@@ -63,9 +69,9 @@ const DetailsModal = ({ show, handleClose, member }) => {
   )
 
   return (
-    <Modal size="lg" show={show} onHide={onModalHide} animation={false}>
+    <Modal size="lg" show={Boolean(selectedMemberForDetails)} onHide={onModalHide} animation={false}>
       <Modal.Header closeButton>
-        <Modal.Title>{member?.first_name} {member?.last_name}</Modal.Title>
+        <Modal.Title>{selectedMemberForDetails?.first_name} {selectedMemberForDetails?.last_name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {memberDetails && renderMembersDetails()}
