@@ -1,27 +1,22 @@
-const API_KEY = process.env.REACT_APP_MEMBERS_API_KEY;
-
 export const getMembersList = async (uri) => {
-  if(Boolean(uri)) {
-    const response = await fetch(uri, {
-      headers: new Headers({
-        'X-API-Key': API_KEY,
-      }),
-    });
-
-    const responseJson = await response.json();
-    return responseJson.results[0].members;
-  }
+  const responseJson = await doRequest(uri);
+  return responseJson?.results[0].members;
 }
 
 export const getMemberDetails = async (uri) => {
+  const responseJson = await doRequest(uri);
+  return responseJson?.results[0];
+}
+
+const doRequest = async (uri) => {
   if(Boolean(uri)) {
     const response = await fetch(uri, {
       headers: new Headers({
-        'X-API-Key': API_KEY,
+        'X-API-Key': process.env.REACT_APP_MEMBERS_API_KEY,
       }),
     });
 
     const responseJson = await response.json();
-    return responseJson.results[0];
+    return responseJson;
   }
 }
