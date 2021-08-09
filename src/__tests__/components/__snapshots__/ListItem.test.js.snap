@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ListItem Matches snapshot 1`] = `
+<tr>
+  <td>
+    A00123
+  </td>
+  <td>
+     Lamar Frank
+  </td>
+  <td>
+    <a
+      href="https://twitter.com/lamartwt"
+      target="_blank"
+    >
+      lamartwt
+    </a>
+  </td>
+  <td>
+    <a
+      href="https://www.facebook.com/lamarfc"
+      target="_blank"
+    >
+      lamarfc
+    </a>
+  </td>
+  <td>
+    <a
+      href="https://www.youtube.com/user/lamaryoutube"
+      target="_blank"
+    >
+      lamaryoutube
+    </a>
+  </td>
+  <td>
+    117
+  </td>
+  <td>
+    /LA
+  </td>
+  <td>
+    2022
+  </td>
+  <td>
+    <a
+      href="#none"
+      onClick={[Function]}
+    >
+      Details
+    </a>
+  </td>
+</tr>
+`;

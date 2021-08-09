@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import TestRenderer from 'react-test-renderer';
 import App from './App';
+import * as MembersContext from './contexts/MembersContext';
 
 // fetch is not supported in node, which is the context in which these jest tests are run
 // this means that the external API calls won't work. That's OK though, we probably don't
@@ -16,7 +18,9 @@ beforeEach(() => {
         Id: '123',
         json: () => {
           return {
-            // YOUR MOCK RESPONSE HERE
+            results: [{
+              members: []
+            }]
           }
         }
       });
@@ -24,8 +28,37 @@ beforeEach(() => {
   });
 });
 
+const contextValues = {
+  loading: false,
+  setLoading: () => {},
+  members: [],
+  filteredMembers: [],
+  setFilteredMembers: () => {},
+  selectedMemberForDetails: null,
+  setSelectedMemberForDetails: () => {},
+  membersPerPage: 10,
+  setMembersPerPage: () => {},
+  currentPage: 0,
+  setCurrentPage: () => {},
+  chamber: 'senate',
+  setChamber: () => {},
+  session: 115,
+  setSession: () => {},
+  minimumSession: 80
+};
+
+beforeEach(() => {
+  jest
+  .spyOn(MembersContext, 'useMembersContext')
+  .mockImplementation(() => contextValues);
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+})
+
 it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
+  TestRenderer.act(() => {
+    TestRenderer.create(<App />);
+  })
 });
