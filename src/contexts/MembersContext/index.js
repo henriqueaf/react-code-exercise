@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState, useCallback, useContext } from 'react';
+import React, { createContext, useEffect, useState, useContext } from 'react';
 import { getMembersCache } from '../../services/membersCache';
 
 const HOUSE_MINIMUM_SESSION = 102;
@@ -87,4 +87,4 @@ const MembersProvider = ({ children }) => {
 
 const useMembersContext = () => useContext(MembersContext);
 
-export { useMembersContext, MembersProvider };
+export { useMembersContext, MembersProvider, MembersContext };
