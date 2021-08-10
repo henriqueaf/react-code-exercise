@@ -18,11 +18,11 @@ const ListItem = ({ member, setSelectedMemberForDetails }) => {
   } = member;
 
   const fullName = () => (
-    `${suffix && ' ' || ''}${first_name}${middle_name && ' ' || ' '}${last_name}`
+    `${suffix? `${suffix} ` : ''}${first_name}${middle_name? `${middle_name} ` : ' '}${last_name}`
   );
 
   const districtAndState = () => (
-    `${district && '/' || ''}${state}`
+    `${district? `${district}/` : ''}${state}`
   );
 
   const handleDetailsClick = (member) => (event) => {

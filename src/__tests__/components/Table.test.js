@@ -47,7 +47,7 @@ describe('Table', () => {
 
   it('Renders member data on table columns', () => {
     mount();
-    const tableRow = screen.getByRole('row', {name: 'A00123 Lamar Frank lamartwt lamarfc lamaryoutube 117 /LA 2022 Details'});
+    const tableRow = screen.getByRole('row', {name: 'A00123 Sr. LamarAdam Frank lamartwt lamarfc lamaryoutube 117 LA/LA 2022 Details'});
     expect(tableRow.children[0].textContent).toBe(member.id);
   });
 })
