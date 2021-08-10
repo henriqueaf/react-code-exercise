@@ -10,11 +10,17 @@ export const getMemberDetails = async (uri) => {
 
 const doRequest = async (uri) => {
   if(Boolean(uri)) {
-    const response = await fetch(uri, {
-      headers: new Headers({
-        'X-API-Key': process.env.REACT_APP_MEMBERS_API_KEY,
-      }),
-    });
+    let response;
+
+    try {
+      response = await fetch(uri, {
+        headers: new Headers({
+          'X-API-Key': process.env.REACT_APP_MEMBERS_API_KEY,
+        }),
+      });
+    } catch (error) {
+      return null;
+    }
 
     const responseJson = await response.json();
     return responseJson;
