@@ -3,13 +3,16 @@ import { Table } from 'react-bootstrap';
 
 import { useMembersContext } from '../../contexts/MembersContext';
 import ListItem from '../ListItem';
+import { setSelectedMemberForDetails } from '../../reducers/MembersReducer/actions';
 
 export default () => {
   const {
-    filteredMembers,
-    setSelectedMemberForDetails,
-    currentPage,
-    membersPerPage
+    state: {
+      filteredMembers,
+      currentPage,
+      membersPerPage
+    },
+    dispatch
   } = useMembersContext();
 
   const startIndex = currentPage * membersPerPage;
@@ -33,7 +36,7 @@ export default () => {
       <tbody>
         {
           filteredMembers.slice(startIndex, endIndex).map((member, index) => (
-            <ListItem member={member} key={index} setSelectedMemberForDetails={setSelectedMemberForDetails} />
+            <ListItem member={member} key={index} setSelectedMemberForDetails={(value) => dispatch(setSelectedMemberForDetails(value))} />
           ))
         }
       </tbody>

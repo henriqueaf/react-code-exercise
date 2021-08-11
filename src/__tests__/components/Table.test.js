@@ -18,10 +18,12 @@ const member = {
 }
 
 const contextValues = {
-  filteredMembers: [member],
-  setSelectedMemberForDetails: () => {},
-  membersPerPage: 1,
-  currentPage: 0
+  state: {
+    filteredMembers: [member],
+    membersPerPage: 1,
+    currentPage: 0
+  },
+  dispatch: () => {},
 };
 
 beforeEach(() => {
