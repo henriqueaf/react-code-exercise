@@ -74,6 +74,12 @@ export default () => {
     dispatch(setFilteredMembers(newMembers));
   }
 
+  const handleFormReset = () => {
+    setParty(0);
+    setGender(0);
+    dispatch(setFilteredMembers(members));
+  }
+
   const renderSessionsSelect = () => {
     const optionsArray = [];
 
@@ -92,7 +98,7 @@ export default () => {
 
   return (
     <div className="my-3">
-      <Form onReset={() => dispatch(setFilteredMembers(members))}>
+      <Form onReset={handleFormReset}>
         <Row>
           <Col>
             <Form.Control placeholder="Senator/Representative name" ref={nameInputRef} onChange={applyFilters} />
