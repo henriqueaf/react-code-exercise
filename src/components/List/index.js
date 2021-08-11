@@ -16,7 +16,9 @@ import { getMembersCache } from '../../services/membersCache';
 
 export default () => {
   const {
-    loading
+    state: {
+      loading
+    }
   } = useMembersContext();
 
   return (

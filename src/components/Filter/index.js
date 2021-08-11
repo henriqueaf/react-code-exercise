@@ -6,15 +6,16 @@ import replace from 'lodash/replace';
 import isString from 'lodash/isString';
 
 import { useMembersContext } from '../../contexts/MembersContext';
+import { setFilteredMembers, setSelectedChamber, setSelectedSession } from '../../reducers/MembersReducer/actions';
 
 export default () => {
   const {
-    members,
-    setFilteredMembers,
-    chamber,
-    setChamber,
-    session,
-    setSession,
+    state: {
+      members,
+      selectedChamber,
+      selectedSession,
+    },
+    dispatch,
     minimumSession
   } = useMembersContext();
 
@@ -70,7 +71,7 @@ export default () => {
     newMembers = handleFilterPartyChange(newMembers);
     newMembers = handleFilterGenderChange(newMembers);
 
-    setFilteredMembers(newMembers);
+    dispatch(setFilteredMembers(newMembers));
   }
 
   const renderSessionsSelect = () => {
@@ -83,7 +84,7 @@ export default () => {
     }
 
     return (
-      <Form.Select value={session} onChange={({ target: { value } }) => setSession(value)}>
+      <Form.Select value={selectedSession} onChange={({ target: { value } }) => dispatch(setSelectedSession(value))}>
         {optionsArray}
       </Form.Select>
     )
@@ -91,7 +92,7 @@ export default () => {
 
   return (
     <div className="my-3">
-      <Form onReset={() => setFilteredMembers(members)}>
+      <Form onReset={() => dispatch(setFilteredMembers(members))}>
         <Row>
           <Col>
             <Form.Control placeholder="Senator/Representative name" ref={nameInputRef} onChange={applyFilters} />
@@ -123,7 +124,7 @@ export default () => {
 
       <Row className="mt-3">
         <Col sm={2}>
-          <Form.Select value={chamber} onChange={({ target: { value } }) => setChamber(value)}>
+          <Form.Select value={selectedChamber} onChange={({ target: { value } }) => dispatch(setSelectedChamber(value))}>
             <option value="senate">senate</option>
             <option value="house">house</option>
           </Form.Select>

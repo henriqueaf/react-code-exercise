@@ -1,4 +1,7 @@
 import React, { createContext, useEffect, useState, useContext } from 'react';
+
+import { useMembersReducer } from '../../reducers/MembersReducer';
+import { setLoading, setMembers, setFilteredMembers, setCurrentPage, setSelectedSession } from '../../reducers/MembersReducer/actions';
 import { getMembersCache } from '../../services/membersCache';
 
 const HOUSE_MINIMUM_SESSION = 102;
@@ -7,19 +10,22 @@ const SENATE_MINIMUM_SESSION = 80;
 const MembersContext = createContext({});
 
 const MembersProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
-  const [members, setMembers] = useState([]);
-  const [filteredMembers, setFilteredMembers] = useState([]);
-  const [selectedMemberForDetails, setSelectedMemberForDetails] = useState(null);
+  const [state, dispatch] = useMembersReducer();
+  const {
+    loading,
+    members,
+    filteredMembers,
+    selectedMemberForDetails,
+    membersPerPage,
+    currentPage,
+    selectedChamber,
+    selectedSession,
+  } = state;
 
-  const [membersPerPage, setMembersPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [chamber, setChamber] = useState('senate');
-  const [session, setSession] = useState(115);
   const [minimumSession, setMinimumSession] = useState(SENATE_MINIMUM_SESSION);
 
   const calculateMinimumSession = () => {
-    switch (chamber) {
+    switch (selectedChamber) {
       case 'senate':
         return SENATE_MINIMUM_SESSION;
         break;
@@ -30,52 +36,40 @@ const MembersProvider = ({ children }) => {
   };
 
   const providerValue = {
-    loading,
-    members,
-    filteredMembers,
-    setFilteredMembers,
-    selectedMemberForDetails,
-    setSelectedMemberForDetails,
-    membersPerPage,
-    setMembersPerPage,
-    currentPage,
-    setCurrentPage,
-    chamber,
-    setChamber,
-    session,
-    setSession,
-    minimumSession
+    minimumSession,
+    state,
+    dispatch,
   };
 
   useEffect(() => {
-    setLoading(true);
+    dispatch(setLoading(true));
 
-    const url = `https://api.propublica.org/congress/v1/${session}/${chamber}/members.json`;
+    const url = `https://api.propublica.org/congress/v1/${selectedSession}/${selectedChamber}/members.json`;
 
     async function membersCache() {
       try {
         const responseMembers = await getMembersCache(url);
-        setMembers(responseMembers);
-        setFilteredMembers(responseMembers);
+        dispatch(setMembers(responseMembers));
+        dispatch(setFilteredMembers(responseMembers));
       } catch (error) {
         console.error(error.message);
-        setLoading(false);
+        dispatch(setLoading(false));
       } finally {
-        setLoading(false);
+        dispatch(setLoading(false));
         setMinimumSession(calculateMinimumSession());
       }
     }
 
     membersCache()
-  }, [chamber, session]);
+  }, [selectedChamber, selectedSession]);
 
   useEffect(() => {
-    if (chamber === 'house' && session < HOUSE_MINIMUM_SESSION)
-      setSession(HOUSE_MINIMUM_SESSION);
-  }, [chamber]);
+    if (selectedChamber === 'house' && selectedSession < HOUSE_MINIMUM_SESSION)
+      dispatch(setSelectedSession(HOUSE_MINIMUM_SESSION));
+  }, [selectedChamber]);
 
   useEffect(() => {
-    setCurrentPage(0);
+    dispatch(setCurrentPage(0));
   }, [membersPerPage, filteredMembers]);
 
   return (

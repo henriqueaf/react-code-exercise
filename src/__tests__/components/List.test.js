@@ -4,28 +4,27 @@ import {MembersContext} from '../../contexts/MembersContext';
 import List from '../../components/List';
 
 const defaultContextValues = {
-  loading: false,
-  setLoading: () => {},
-  members: [],
-  filteredMembers: [],
-  setFilteredMembers: () => {},
-  selectedMemberForDetails: null,
-  setSelectedMemberForDetails: () => {},
-  membersPerPage: 10,
-  setMembersPerPage: () => {},
-  currentPage: 0,
-  setCurrentPage: () => {},
-  chamber: 'senate',
-  setChamber: () => {},
-  session: 115,
-  setSession: () => {},
-  minimumSession: 80
+  state: {
+    loading: false,
+    members: [],
+    filteredMembers: [],
+    selectedMemberForDetails: null,
+    membersPerPage: 10,
+    currentPage: 0,
+    chamber: 'senate',
+    session: 115,
+  },
+  minimumSession: 80,
+  dispatch: () => {}
 };
 
-const mount = (props) => {
+const mount = (stateProps) => {
   const mergedProps = {
     ...defaultContextValues,
-    ...props,
+    state: {
+      ...defaultContextValues.state,
+      ...stateProps
+    }
   };
 
   return render(

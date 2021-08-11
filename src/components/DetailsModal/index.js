@@ -4,12 +4,15 @@ import { Modal } from 'react-bootstrap';
 import { useMembersContext } from '../../contexts/MembersContext';
 import { getAddressGeocodeLocation } from '../../services/googleGeocodeApi';
 import { getMemberDetails } from '../../services/membersApi';
+import { setSelectedMemberForDetails } from '../../reducers/MembersReducer/actions';
 import Map from '../Map';
 
 const DetailsModal = () => {
   const {
-    selectedMemberForDetails,
-    setSelectedMemberForDetails
+    state: {
+      selectedMemberForDetails
+    },
+    dispatch
   } = useMembersContext();
 
   const [officeGeocode, setOfficeGeocode] = useState();
@@ -50,7 +53,7 @@ const DetailsModal = () => {
   const onModalHide = () => {
     setOfficeGeocode(null);
     setMemberDetails(null);
-    setSelectedMemberForDetails(null);
+    dispatch(setSelectedMemberForDetails(null));
   }
 
   const renderMap = () => (
