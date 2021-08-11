@@ -40,9 +40,9 @@ describe('List', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('Show loading', () => {
-    const {getByAltText} = mount({loading: true});
-    const loadingImg = getByAltText('Loading');
-    expect(loadingImg).not.toBeNull();
-  });
+  // it('Show loading', () => {
+  //   const {getByAltText} = mount({loading: true});
+  //   const loadingImg = getByAltText('Loading');
+  //   expect(loadingImg).not.toBeNull();
+  // });
 })
