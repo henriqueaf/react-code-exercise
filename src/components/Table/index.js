@@ -1,20 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Table } from 'react-bootstrap';
 
-import { useMembersContext } from '../../contexts/MembersContext';
 import ListItem from '../ListItem';
 import { setSelectedMemberForDetails } from '../../reducers/MembersReducer/actions';
 
-export default () => {
-  const {
-    state: {
-      filteredMembers,
-      currentPage,
-      membersPerPage
-    },
-    dispatch
-  } = useMembersContext();
-
+const CustomTable = ({filteredMembers, currentPage, membersPerPage, dispatch}) => {
   const startIndex = currentPage * membersPerPage;
   const endIndex = startIndex + membersPerPage;
 
@@ -43,3 +33,5 @@ export default () => {
     </Table>
   );
 };
+
+export default memo(CustomTable);
