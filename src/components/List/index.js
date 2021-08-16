@@ -9,7 +9,7 @@ import Filter from '../Filter/container';
 import Table from '../Table/container';
 import ListItem from '../ListItem';
 import Pagination from '../Pagination/container';
-import DetailsModal from '../DetailsModal';
+import DetailsModal from '../DetailsModal/container';
 import CongressImg from '../../images/congress.png';
 import { useMembersContext } from '../../contexts/MembersContext';
 import { getMembersCache } from '../../services/membersCache';
