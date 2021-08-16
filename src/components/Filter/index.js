@@ -1,24 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, memo } from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import includes from 'lodash/includes';
 import toLower from 'lodash/toLower';
 import replace from 'lodash/replace';
 import isString from 'lodash/isString';
 
-import { useMembersContext } from '../../contexts/MembersContext';
 import { setFilteredMembers, setSelectedChamber, setSelectedSession } from '../../reducers/MembersReducer/actions';
 
-export default () => {
-  const {
-    state: {
-      members,
-      selectedChamber,
-      selectedSession,
-    },
-    dispatch,
-    minimumSession
-  } = useMembersContext();
-
+const Filter = ({members, selectedChamber, selectedSession, minimumSession, dispatch}) => {
   const [party, setParty] = useState('');
   const [gender, setGender] = useState('');
 
@@ -143,3 +132,5 @@ export default () => {
     </div>
   );
 };
+
+export default memo(Filter);

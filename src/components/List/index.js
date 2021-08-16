@@ -5,7 +5,7 @@ import toLower from 'lodash/toLower';
 import replace from 'lodash/replace';
 import './index.css';
 
-import Filter from '../Filter';
+import Filter from '../Filter/container';
 import Table from '../Table';
 import ListItem from '../ListItem';
 import Pagination from '../Pagination/container';
