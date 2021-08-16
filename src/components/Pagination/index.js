@@ -1,20 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Pagination, Form, Row, Col } from 'react-bootstrap';
 import isNumber from 'lodash/isNumber';
 
-import { useMembersContext } from '../../contexts/MembersContext';
 import { setMembersPerPage, setCurrentPage } from '../../reducers/MembersReducer/actions';
 
-export default () => {
-  const {
-    state: {
-      filteredMembers,
-      membersPerPage,
-      currentPage
-    },
-    dispatch
-  } = useMembersContext();
-
+const CustomPagination = ({filteredMembers, membersPerPage, currentPage, dispatch}) => {
   const pages = Math.ceil(filteredMembers.length / membersPerPage);
   const pagesArray = [];
 
@@ -49,3 +39,5 @@ export default () => {
     </Row>
   )
 };
+
+export default memo(CustomPagination);
