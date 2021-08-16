@@ -35,7 +35,7 @@ export default () => {
       </thead>
       <tbody>
         {
-          filteredMembers.slice(startIndex, endIndex).map((member, index) => (
+          filteredMembers?.slice(startIndex, endIndex).map((member, index) => (
             <ListItem member={member} key={index} setSelectedMemberForDetails={(value) => dispatch(setSelectedMemberForDetails(value))} />
           ))
         }

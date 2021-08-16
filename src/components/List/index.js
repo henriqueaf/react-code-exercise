@@ -8,7 +8,7 @@ import './index.css';
 import Filter from '../Filter';
 import Table from '../Table';
 import ListItem from '../ListItem';
-import Pagination from '../Pagination';
+import Pagination from '../Pagination/container';
 import DetailsModal from '../DetailsModal';
 import CongressImg from '../../images/congress.png';
 import { useMembersContext } from '../../contexts/MembersContext';
