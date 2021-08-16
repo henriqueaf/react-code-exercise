@@ -25,12 +25,16 @@ export const getMembersCache = async (url) => {
 const fetchAndSetMembersToCache = async (url) => {
   const members = await getMembersList(url);
 
-  const data = {
-    members,
-    expiry: new Date().getTime() + ONE_DAY
+  if (members) {
+    const data = {
+      members,
+      expiry: new Date().getTime() + ONE_DAY
+    }
+
+    localStorage.setItem(url, JSON.stringify(data));
+
+    return members;
   }
 
-  localStorage.setItem(url, JSON.stringify(data));
-
-  return members;
+  return [];
 }
