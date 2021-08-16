@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { Modal } from 'react-bootstrap';
 
-import { useMembersContext } from '../../contexts/MembersContext';
 import { getAddressGeocodeLocation } from '../../services/googleGeocodeApi';
 import { getMemberDetails } from '../../services/membersApi';
 import { setSelectedMemberForDetails } from '../../reducers/MembersReducer/actions';
 import Map from '../Map';
 
-const DetailsModal = () => {
-  const {
-    state: {
-      selectedMemberForDetails
-    },
-    dispatch
-  } = useMembersContext();
-
+const DetailsModal = ({selectedMemberForDetails, dispatch}) => {
   const [officeGeocode, setOfficeGeocode] = useState();
   const [memberDetails, setMemberDetails] = useState();
 
@@ -84,4 +76,4 @@ const DetailsModal = () => {
   );
 };
 
-export default DetailsModal;
+export default memo(DetailsModal);
