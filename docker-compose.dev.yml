@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+    image: react_code_exercise:dev
+    container_name: react_code_exercise
+    environment:
+      NODE_ENV: development
+    ports:
+      - '3000:3000'
+    command: sh ./scripts/start.sh
+    volumes:
+      # /app is the folder created for the application in Dockerfile
+      - .:/app
