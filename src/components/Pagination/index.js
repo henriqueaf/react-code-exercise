@@ -29,7 +29,7 @@ const CustomPagination = ({filteredMembers, membersPerPage, currentPage, dispatc
       </Col>
 
       <Col sm={1}>
-        <Form.Select value={membersPerPage} onChange={({ target: { value } }) => dispatch(setMembersPerPage(value))}>
+        <Form.Select value={membersPerPage} onChange={({ target: { value } }) => dispatch(setMembersPerPage(Number(value)))}>
           <option>Select members per page</option>
           <option value={10}>10</option>
           <option value={20}>20</option>
