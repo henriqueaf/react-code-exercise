@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import TestRenderer from 'react-test-renderer';
+import {render, waitFor} from '@testing-library/react';
 import App from './App';
 import * as MembersContext from './contexts/MembersContext';
 
@@ -11,8 +10,9 @@ import * as MembersContext from './contexts/MembersContext';
 // keep in mind you will need to edit this mock response with the appropriate mock API data
 // so that your components recieve the data they expect.
 beforeEach(() => {
+  // eslint-disable-next-line no-undef
   global.fetch = jest.fn().mockImplementation(() => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       resolve({
         ok: true,
         Id: '123',
@@ -53,8 +53,6 @@ afterEach(() => {
   jest.clearAllMocks();
 })
 
-it('renders without crashing', () => {
-  TestRenderer.act(() => {
-    TestRenderer.create(<App />);
-  })
+it('renders without crashing', async () => {
+  await waitFor(() => render(<App />))
 });
