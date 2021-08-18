@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React from 'react'
 
 import { useMembersContext } from '../../contexts/MembersContext';
 import DetailsModal from './index';

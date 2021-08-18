@@ -5,20 +5,16 @@ const MediaLink = ({ type, account_name }) => {
     switch (type) {
       case 'twitter':
         return `https://twitter.com/${account_name}`;
-        break;
       case 'facebook':
         return `https://www.facebook.com/${account_name}`;
-        break;
       case 'youtube':
         return `https://www.youtube.com/user/${account_name}`;
-        break;
       default:
         return '';
-        break;
     }
   }
   return (
-    <a href={getMediaLink()} target="_blank">
+    <a href={getMediaLink()} target="_blank" rel="noreferrer">
       {account_name}
     </a>
   );

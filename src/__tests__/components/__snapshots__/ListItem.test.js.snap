@@ -12,6 +12,7 @@ exports[`ListItem Matches snapshot 1`] = `
     <td>
       <a
         href="https://twitter.com/lamartwt"
+        rel="noreferrer"
         target="_blank"
       >
         lamartwt
@@ -20,6 +21,7 @@ exports[`ListItem Matches snapshot 1`] = `
     <td>
       <a
         href="https://www.facebook.com/lamarfc"
+        rel="noreferrer"
         target="_blank"
       >
         lamarfc
@@ -28,6 +30,7 @@ exports[`ListItem Matches snapshot 1`] = `
     <td>
       <a
         href="https://www.youtube.com/user/lamaryoutube"
+        rel="noreferrer"
         target="_blank"
       >
         lamaryoutube

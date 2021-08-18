@@ -1,20 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
-import includes from 'lodash/includes';
-import toLower from 'lodash/toLower';
-import replace from 'lodash/replace';
+import React from 'react';
 import './index.css';
 
 import Filter from '../Filter/container';
 import Table from '../Table/container';
-import ListItem from '../ListItem';
 import Pagination from '../Pagination/container';
 import DetailsModal from '../DetailsModal/container';
 import CongressImg from '../../images/congress.png';
 import { useMembersContext } from '../../contexts/MembersContext';
-import { getMembersCache } from '../../services/membersCache';
 
-export default () => {
+const List = () => {
   const {
     state: {
       loading
@@ -37,3 +31,5 @@ export default () => {
     </div>
   );
 };
+
+export default List;

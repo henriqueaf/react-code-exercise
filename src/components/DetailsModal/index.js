@@ -11,12 +11,14 @@ const DetailsModal = ({selectedMemberForDetails, dispatch}) => {
   const [memberDetails, setMemberDetails] = useState();
 
   useEffect(() => {
-    if (Boolean(selectedMemberForDetails)) {
+    if (selectedMemberForDetails) {
+      // eslint-disable-next-line no-inner-declarations
       async function getGeocode() {
         const geocode = await getAddressGeocodeLocation(selectedMemberForDetails.office);
         setOfficeGeocode(geocode);
       }
 
+      // eslint-disable-next-line no-inner-declarations
       async function getDetails() {
         const details = await getMemberDetails(selectedMemberForDetails.api_uri);
         setMemberDetails(details);
@@ -34,7 +36,7 @@ const DetailsModal = ({selectedMemberForDetails, dispatch}) => {
         <hr/>
         <ul>
           {memberDetails.roles.map((role, index) => (
-            <li key={index}>{role.title} => from <b>{role.start_date}</b> to <b>{role.end_date}</b></li>
+            <li key={index}>{role.title} {'=>'} from <b>{role.start_date}</b> to <b>{role.end_date}</b></li>
           ))}
         </ul>
         </li>
@@ -53,6 +55,7 @@ const DetailsModal = ({selectedMemberForDetails, dispatch}) => {
       <h5><b>Office:</b> {selectedMemberForDetails?.office}</h5>
       <hr/>
       <Map
+        // eslint-disable-next-line no-undef
         googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
         loadingElement={<div style={{ height: '100%' }} />}
         containerElement={<div style={{ height: '400px' }} />}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import logo from './logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ListContainer from './components/List/container';

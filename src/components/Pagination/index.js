@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import { Pagination, Form, Row, Col } from 'react-bootstrap';
-import isNumber from 'lodash/isNumber';
 
 import { setMembersPerPage, setCurrentPage } from '../../reducers/MembersReducer/actions';
 

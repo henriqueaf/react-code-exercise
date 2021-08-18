@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useRef, memo } from 'react';
+import React, { useState, useRef, memo } from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import includes from 'lodash/includes';
 import toLower from 'lodash/toLower';
 import replace from 'lodash/replace';
-import isString from 'lodash/isString';
 
 import { setFilteredMembers, setSelectedChamber, setSelectedSession } from '../../reducers/MembersReducer/actions';
 
@@ -29,7 +28,7 @@ const Filter = ({members, selectedChamber, selectedSession, minimumSession, disp
   const handleFilterNameChange = (membersToSearch) => {
     const inputText = nameInputRef.current.value;
 
-    if (Boolean(inputText)) {
+    if (inputText) {
       return membersToSearch.filter((member) => filterMemberByFullname(member, inputText));
     }
     return membersToSearch;

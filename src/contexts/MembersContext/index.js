@@ -12,12 +12,8 @@ const MembersContext = createContext({});
 const MembersProvider = ({ children }) => {
   const [state, dispatch] = useMembersReducer();
   const {
-    loading,
-    members,
     filteredMembers,
-    selectedMemberForDetails,
     membersPerPage,
-    currentPage,
     selectedChamber,
     selectedSession,
   } = state;
@@ -28,10 +24,8 @@ const MembersProvider = ({ children }) => {
     switch (selectedChamber) {
       case 'senate':
         return SENATE_MINIMUM_SESSION;
-        break;
       case 'house':
         return HOUSE_MINIMUM_SESSION;
-        break;
     }
   };
 

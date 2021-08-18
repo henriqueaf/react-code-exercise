@@ -9,12 +9,13 @@ export const getMemberDetails = async (uri) => {
 }
 
 const doRequest = async (uri) => {
-  if(Boolean(uri)) {
+  if(uri) {
     let response;
 
     try {
       response = await fetch(uri, {
         headers: new Headers({
+          // eslint-disable-next-line no-undef
           'X-API-Key': process.env.REACT_APP_MEMBERS_API_KEY,
         }),
       });

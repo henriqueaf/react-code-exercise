@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import { useMembersContext } from '../../contexts/MembersContext';
 
 import Filter from './index';

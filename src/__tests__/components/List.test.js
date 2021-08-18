@@ -1,5 +1,4 @@
-import {useEffect} from 'react';
-import {render, fireEvent, screen, cleanup} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import {MembersContext} from '../../contexts/MembersContext';
 import List from '../../components/List';
 
@@ -36,7 +35,7 @@ const mount = (stateProps) => {
 
 describe('List', () => {
   it('Matches snapshot', () => {
-    const {container, getByAltText} = mount();
+    const {container} = mount();
     expect(container).toMatchSnapshot();
   });
 
